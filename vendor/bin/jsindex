@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+SRC_DIR="`pwd`"
+cd "`dirname "$0"`"
+cd "../cebe/js-search/bin"
+BIN_TARGET="`pwd`/jsindex"
+cd "$SRC_DIR"
+"$BIN_TARGET" "$@"
