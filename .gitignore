@@ -27,7 +27,7 @@ phpunit.phar
 # vendor/**/.git/
 
 # public resources
-/assets/*
+theme/**/publish/*
 
 # runtime 
 **/runtime/*

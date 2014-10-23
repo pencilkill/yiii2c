@@ -21,15 +21,6 @@ return array (
       '@yii/codeception' => $vendorDir . '/yiisoft/yii2-codeception',
     ),
   ),
-  'yiisoft/yii2-bootstrap' => 
-  array (
-    'name' => 'yiisoft/yii2-bootstrap',
-    'version' => '9999999-dev',
-    'alias' => 
-    array (
-      '@yii/bootstrap' => $vendorDir . '/yiisoft/yii2-bootstrap',
-    ),
-  ),
   'yiisoft/yii2-debug' => 
   array (
     'name' => 'yiisoft/yii2-debug',
@@ -37,15 +28,6 @@ return array (
     'alias' => 
     array (
       '@yii/debug' => $vendorDir . '/yiisoft/yii2-debug',
-    ),
-  ),
-  'yiisoft/yii2-gii' => 
-  array (
-    'name' => 'yiisoft/yii2-gii',
-    'version' => '9999999-dev',
-    'alias' => 
-    array (
-      '@yii/gii' => $vendorDir . '/yiisoft/yii2-gii',
     ),
   ),
   'yiisoft/yii2-faker' => 
@@ -145,6 +127,33 @@ return array (
     'alias' => 
     array (
       '@yii/twig' => $vendorDir . '/yiisoft/yii2-twig',
+    ),
+  ),
+  'c006/yii2-auto-crud' => 
+  array (
+    'name' => 'c006/yii2-auto-crud',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@c006/crud' => $vendorDir . '/c006/yii2-auto-crud',
+    ),
+  ),
+  'yiisoft/yii2-bootstrap' => 
+  array (
+    'name' => 'yiisoft/yii2-bootstrap',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@yii/bootstrap' => $vendorDir . '/yiisoft/yii2-bootstrap',
+    ),
+  ),
+  'yiisoft/yii2-gii' => 
+  array (
+    'name' => 'yiisoft/yii2-gii',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@yii/gii' => $vendorDir . '/yiisoft/yii2-gii',
     ),
   ),
 );
