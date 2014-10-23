@@ -16,6 +16,16 @@ return [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
         ],
+        'assetManager' => [
+			'basePath' => '@webroot/web',
+			'baseUrl' => '@web/web',
+		],
+		'view' => [
+			'theme' => [
+				'pathMap' => ['@frontend/views' => '@frontend/themes/bootstrap/views'],
+				'baseUrl' => '@web/web',
+			],
+		],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [

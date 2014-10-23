@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\gii\generators\controller;
+namespace backend\gii\generators\controller;
 
 use Yii;
 use yii\gii\CodeFile;

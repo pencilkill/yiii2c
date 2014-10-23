@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace yii\gii\generators\model;
+namespace backend\gii\generators\model;
 
 use Yii;
 use yii\db\ActiveRecord;

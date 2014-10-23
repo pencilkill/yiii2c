@@ -18,13 +18,13 @@ return [
             'enableAutoLogin' => true,
         ],
         'assetManager' => [
-			'basePath' => '@webroot/theme/backend/publish',
-			'baseUrl' => '@web/theme/backend/publish',
+			'basePath' => '@webroot/web',
+			'baseUrl' => '@web/web',
 		],
 		'view' => [
 			'theme' => [
-				'pathMap' => ['@backend/views' => '@webroot/theme/backend/views'],
-				'baseUrl' => '@web/theme/backend/views',
+				'pathMap' => ['@backend/views' => '@backend/themes/bootstrap/views'],
+				'baseUrl' => '@web/web',
 			],
 		],
         'log' => [
