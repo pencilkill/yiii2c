@@ -16,7 +16,6 @@ $this->title = 'My Yii Application';
 
         <div class="row">
         <!--  -->
-        <?php echo common\widgets\swfupload\SWFUpload::widget(['name' => 'Product[image][]'])?>
         </div>
         <div class="row">
             <div class="col-lg-4">
