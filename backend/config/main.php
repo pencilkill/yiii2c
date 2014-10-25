@@ -10,6 +10,7 @@ return [
     'id' => 'backend',
     'name' => 'My Company Administrator',
     'basePath' => dirname(__DIR__),
+    'language' => 'zh-CN',
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
@@ -28,6 +29,19 @@ return [
 				'baseUrl' => '@web/web',
 			],
 		],
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@backend/messages',
+                    'sourceLanguage' => 'en_US',
+                    'fileMap' => []
+                    // 'app' => 'app.php',
+                    // 'app/error' => 'error.php'
+                    
+                ]
+            ]
+        ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
