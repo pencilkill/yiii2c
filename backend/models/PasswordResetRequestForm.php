@@ -2,7 +2,6 @@
 namespace backend\models\models;
 
 use yii\base\Model;
-use backend\models\Admin;
 
 /**
  * Password reset request form
