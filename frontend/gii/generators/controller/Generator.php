@@ -27,7 +27,7 @@ use yii\helpers\Inflector;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Generator extends \yii\gii\Generator
+class Generator extends \yii\gii\generators\controller\Generator
 {
     /**
      * @var string the controller ID

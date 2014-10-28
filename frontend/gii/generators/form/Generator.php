@@ -19,7 +19,7 @@ use yii\gii\CodeFile;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Generator extends \yii\gii\Generator
+class Generator extends \yii\gii\generators\form\Generator
 {
     public $modelClass;
     public $viewPath = '@app/views';

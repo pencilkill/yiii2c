@@ -20,7 +20,7 @@ use yii\gii\CodeFile;
  * @author Tobias Munk <schmunk@usrbin.de>
  * @since 2.0
  */
-class Generator extends \yii\gii\Generator
+class Generator extends \yii\gii\generators\extension\Generator
 {
     public $vendorName;
     public $packageName = "yii2-";

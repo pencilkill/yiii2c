@@ -29,7 +29,7 @@ use yii\web\Controller;
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @since 2.0
  */
-class Generator extends \yii\gii\Generator
+class Generator extends \yii\gii\generators\crud\Generator
 {
     public $modelClass;
     public $moduleID;
