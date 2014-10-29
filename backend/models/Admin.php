@@ -51,7 +51,7 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             [['salt'], 'required'],
             [['status'], 'integer'],
-            [['create_at', 'update_at'], 'safe'],
+            [['created_at', 'updated_at'], 'safe'],
             [['username', 'password', 'token'], 'string', 'max' => 64],
             [['salt'], 'string', 'max' => 32],
             [['email'], 'string', 'max' => 256],
@@ -72,8 +72,8 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
             'token' => Yii::t('m/Admin', 'Token'),
             'email' => Yii::t('m/Admin', 'Email'),
             'status' => Yii::t('m/Admin', 'Status'),
-            'create_at' => Yii::t('m/Admin', 'Create At'),
-            'update_at' => Yii::t('m/Admin', 'Update At'),
+            'create_at' => Yii::t('m/Admin', 'Created At'),
+            'update_at' => Yii::t('m/Admin', 'Updated At'),
         ];
     }
 
@@ -82,7 +82,7 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['admin_id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
     
     /**

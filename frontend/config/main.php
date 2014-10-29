@@ -14,7 +14,7 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'frontend\models\Customer',
             'enableAutoLogin' => true,
         ],
         'assetManager' => [
@@ -26,6 +26,18 @@ return [
 				'pathMap' => ['@frontend/views' => '@frontend/themes/bootstrap/views'],
 				'baseUrl' => '@web/web',
 			],
+		],
+		'i18n' => [
+			'translations' => [
+				'*' => [
+					'class' => 'yii\i18n\PhpMessageSource',
+					'basePath' => '@backend/messages',
+					'sourceLanguage' => 'en_US',
+					'fileMap' => []
+					// 'app' => 'app.php',
+					// 'app/error' => 'error.php'
+				]
+			]
 		],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

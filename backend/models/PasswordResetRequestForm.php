@@ -41,7 +41,7 @@ class PasswordResetRequestForm extends Model
         ]);
 
         if ($user) {
-            if (!User::isPasswordResetTokenValid($user->password_reset_token)) {
+            if (!Admin::isPasswordResetTokenValid($user->password_reset_token)) {
                 $user->generatePasswordResetToken();
             }
 

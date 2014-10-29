@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2014-10-28 17:15:22
+-- Generation Time: 2014-10-29 04:20:50
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `auth_key` varchar(64) NOT NULL,
   `email` varchar(256) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`admin_id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员' AUTO_INCREMENT=1 ;
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 CREATE TABLE IF NOT EXISTS `admin_assignment` (
   `item_name` varchar(64) NOT NULL,
   `user_id` varchar(64) NOT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`item_name`,`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -65,8 +65,8 @@ CREATE TABLE IF NOT EXISTS `admin_item` (
   `description` text,
   `rule_name` varchar(64) DEFAULT NULL,
   `data` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`name`),
   KEY `rule_name` (`rule_name`),
   KEY `type` (`type`)
@@ -94,8 +94,8 @@ CREATE TABLE IF NOT EXISTS `admin_item_child` (
 CREATE TABLE IF NOT EXISTS `admin_rule` (
   `name` varchar(64) NOT NULL,
   `data` text,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -128,8 +128,8 @@ CREATE TABLE IF NOT EXISTS `content` (
   `content_id` int(32) unsigned NOT NULL,
   `parent_id` int(32) unsigned DEFAULT NULL,
   `sort_order` int(32) unsigned NOT NULL DEFAULT '0',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`content_id`),
   UNIQUE KEY `information_id` (`content_id`),
   KEY `parent_id` (`parent_id`)
@@ -162,20 +162,29 @@ CREATE TABLE IF NOT EXISTS `content_i18n` (
 
 CREATE TABLE IF NOT EXISTS `customer` (
   `customer_id` int(11) NOT NULL AUTO_INCREMENT,
-  `customer_type_id` int(32) unsigned NOT NULL,
+  `customer_type_id` int(32) unsigned DEFAULT '1',
   `username` varchar(64) NOT NULL,
-  `password` varchar(64) NOT NULL,
-  `salt` varchar(32) NOT NULL,
+  `password_hash` varchar(64) NOT NULL,
+  `password_reset_token` varchar(64) DEFAULT NULL,
+  `auth_key` varchar(64) NOT NULL,
+  `role` int(32) NOT NULL DEFAULT '10',
   `email` varchar(256) NOT NULL,
   `first_name` varchar(64) NOT NULL DEFAULT '',
   `last_name` varchar(64) NOT NULL DEFAULT '',
   `approval` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '10',
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`customer_id`),
   KEY `customer_type_id` (`customer_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='客户' AUTO_INCREMENT=3 ;
+
+--
+-- 转存表中的数据 `customer`
+--
+
+INSERT INTO `customer` (`customer_id`, `customer_type_id`, `username`, `password_hash`, `password_reset_token`, `auth_key`, `role`, `email`, `first_name`, `last_name`, `approval`, `status`, `created_at`, `updated_at`) VALUES
+(2, 1, 'admin', '$2y$13$JfKXfW9EsPIpiCMxvvolGukBupXW7aHC.L6A/ONdhP/nbEo34Wc1m', '6RLM7Yyp1QbQ7Lh5CanaF6xRYsE9IoHj_1414552757', 'rMkzfyB-2Cz03Zug5XE7bMgjNFPyacEG', 10, 'song_de_qiang@sina.com', '', '', 0, 10, 1414551874, 1414552757);
 
 -- --------------------------------------------------------
 
@@ -188,10 +197,17 @@ CREATE TABLE IF NOT EXISTS `customer_type` (
   `name` varchar(64) NOT NULL,
   `sort_order` int(32) unsigned NOT NULL DEFAULT '0',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`customer_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='客户类型' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='客户类型' AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `customer_type`
+--
+
+INSERT INTO `customer_type` (`customer_type_id`, `name`, `sort_order`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Default', 0, 1, 1414461361, 1414461361);
 
 -- --------------------------------------------------------
 
@@ -202,8 +218,8 @@ CREATE TABLE IF NOT EXISTS `customer_type` (
 CREATE TABLE IF NOT EXISTS `information` (
   `information_id` int(32) unsigned NOT NULL,
   `sort_order` int(32) unsigned NOT NULL DEFAULT '0',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`information_id`),
   UNIQUE KEY `information_id` (`information_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='讯息页';
@@ -253,8 +269,8 @@ CREATE TABLE IF NOT EXISTS `information_to_type` (
 CREATE TABLE IF NOT EXISTS `information_type` (
   `information_type_id` int(32) unsigned NOT NULL AUTO_INCREMENT,
   `sort_order` int(32) unsigned NOT NULL DEFAULT '0',
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`information_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='讯息页分类' AUTO_INCREMENT=1 ;
 
@@ -302,8 +318,8 @@ CREATE TABLE IF NOT EXISTS `picture` (
   `picture_id` int(32) unsigned NOT NULL AUTO_INCREMENT,
   `picture_type_id` int(32) unsigned NOT NULL,
   `sort_order` int(32) unsigned NOT NULL DEFAULT '0',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`picture_id`),
   KEY `picture_type_id` (`picture_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图片' AUTO_INCREMENT=1 ;
@@ -339,8 +355,8 @@ CREATE TABLE IF NOT EXISTS `picture_i18n` (
 CREATE TABLE IF NOT EXISTS `picture_type` (
   `picture_type_id` int(32) unsigned NOT NULL AUTO_INCREMENT,
   `sort_order` int(32) unsigned NOT NULL DEFAULT '0',
-  `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`picture_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='图片分组' AUTO_INCREMENT=1 ;
 
@@ -369,8 +385,8 @@ CREATE TABLE IF NOT EXISTS `picture_type_i18n` (
 CREATE TABLE IF NOT EXISTS `product` (
   `product_id` int(32) unsigned NOT NULL AUTO_INCREMENT,
   `sort_order` int(32) NOT NULL,
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品' AUTO_INCREMENT=1 ;
 
@@ -433,8 +449,8 @@ CREATE TABLE IF NOT EXISTS `product_type` (
   `product_type_id` int(32) unsigned NOT NULL AUTO_INCREMENT,
   `parent_id` int(32) DEFAULT NULL,
   `sort_order` int(32) unsigned NOT NULL,
-  `create_at` timestamp NOT NULL,
-  `update_at` timestamp NOT NULL,
+  `created_at` int(32) unsigned NOT NULL,
+  `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`product_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品分类' AUTO_INCREMENT=1 ;
 
