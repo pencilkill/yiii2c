@@ -3,7 +3,7 @@
 * http://github.com/RobinHerbots/jquery.inputmask
 * Copyright (c) 2010 - 2014 Robin Herbots
 * Licensed under the MIT license (http://www.opensource.org/licenses/mit-license.php)
-* Version: 3.1.33
+* Version: 3.1.36
 */
 !function(factory) {
     "function" == typeof define && define.amd ? define([ "jquery", "./jquery.inputmask" ], factory) : factory(jQuery);
@@ -90,6 +90,10 @@
                     return rslt.caret = rslt.pos + 1, rslt;
                 }
             },
+            postProcessOnBlur: function(tmpBuffer, opts) {
+                var tmpBufSplit = "" != opts.radixPoint ? tmpBuffer.join("").split(opts.radixPoint) : [ tmpBuffer.join("") ], matchRslt = tmpBufSplit[0].match(opts.regex.integerPart(opts)), matchRsltDigits = 2 == tmpBufSplit.length ? tmpBufSplit[1].match(opts.regex.integerNPart(opts)) : void 0;
+                matchRslt && "-0" == matchRslt[matchRslt.index] && (void 0 == matchRsltDigits || matchRsltDigits[matchRsltDigits.index].match(/^0+$/)) && tmpBuffer.splice(0, 1);
+            },
             regex: {
                 integerPart: function() {
                     return new RegExp("[-+]?\\d+");
@@ -99,32 +103,26 @@
                 }
             },
             signHandler: function(chrs, maskset, pos, strict, opts) {
-                if (!strict && (opts.allowMinus && "-" === chrs || opts.allowPlus && "+" === chrs || "0" === chrs)) {
+                if (!strict && (opts.allowMinus && "-" === chrs || opts.allowPlus && "+" === chrs)) {
                     var matchRslt = maskset.buffer.join("").match(opts.regex.integerPart(opts));
-                    if (matchRslt && matchRslt.length > 0 && ("0" !== matchRslt[matchRslt.index] || maskset.buffer && maskset._buffer && maskset.buffer.join("") != maskset._buffer.join(""))) {
-                        if ("0" !== chrs) return maskset.buffer[matchRslt.index] == ("-" === chrs ? "+" : "-") ? {
-                            pos: matchRslt.index,
-                            c: chrs,
-                            remove: matchRslt.index,
-                            caret: pos
-                        } : maskset.buffer[matchRslt.index] == ("-" === chrs ? "-" : "+") ? {
-                            remove: matchRslt.index,
-                            caret: pos - 1
-                        } : {
-                            pos: matchRslt.index,
-                            c: chrs,
-                            caret: pos + 1
-                        };
-                        if ("-" == maskset.buffer[matchRslt.index] || "+" == maskset.buffer[matchRslt.index]) return {
-                            remove: matchRslt.index,
-                            caret: pos - 1
-                        };
-                    }
+                    if (matchRslt && matchRslt[matchRslt.index].length > 0 && ("0" !== matchRslt[matchRslt.index] || maskset.buffer && maskset._buffer && maskset.buffer.join("") != maskset._buffer.join(""))) return maskset.buffer[matchRslt.index] == ("-" === chrs ? "+" : "-") ? {
+                        pos: matchRslt.index,
+                        c: chrs,
+                        remove: matchRslt.index,
+                        caret: pos
+                    } : maskset.buffer[matchRslt.index] == ("-" === chrs ? "-" : "+") ? {
+                        remove: matchRslt.index,
+                        caret: pos - 1
+                    } : {
+                        pos: matchRslt.index,
+                        c: chrs,
+                        caret: pos + 1
+                    };
                 }
                 return !1;
             },
             radixHandler: function(chrs, maskset, pos, strict, opts) {
-                if (!strict && chrs === opts.radixPoint) {
+                if (!strict && chrs === opts.radixPoint && opts.digits > 0) {
                     var radixPos = $.inArray(opts.radixPoint, maskset.buffer), integerValue = maskset.buffer.join("").match(opts.regex.integerPart(opts));
                     if (-1 != radixPos && maskset.validPositions[radixPos]) return maskset.validPositions[radixPos - 1] ? {
                         caret: radixPos + 1
@@ -132,6 +130,10 @@
                         pos: integerValue.index,
                         c: integerValue[0],
                         caret: radixPos + 1
+                    };
+                    if (!integerValue || "0" == integerValue[0]) return maskset.buffer[integerValue ? integerValue.index : pos] = "0", 
+                    {
+                        pos: (integerValue ? integerValue.index : pos) + 1
                     };
                 }
                 return !1;
@@ -221,11 +223,13 @@
                 isFinite(processValue);
             },
             onBeforeMask: function(initialValue, opts) {
-                if (isFinite(initialValue)) return initialValue.toString().replace(".", opts.radixPoint);
-                var kommaMatches = initialValue.match(/,/g), dotMatches = initialValue.match(/\./g);
-                return dotMatches && kommaMatches ? dotMatches.length > kommaMatches.length ? (initialValue = initialValue.replace(/\./g, ""), 
-                initialValue = initialValue.replace(",", opts.radixPoint)) : kommaMatches.length > dotMatches.length && (initialValue = initialValue.replace(/,/g, ""), 
-                initialValue = initialValue.replace(".", opts.radixPoint)) : initialValue = initialValue.replace(new RegExp($.inputmask.escapeRegex.call(this, opts.groupSeparator), "g"), ""), 
+                if ("" != opts.radixPoint && isFinite(initialValue)) initialValue = initialValue.toString().replace(".", opts.radixPoint); else {
+                    var kommaMatches = initialValue.match(/,/g), dotMatches = initialValue.match(/\./g);
+                    dotMatches && kommaMatches ? dotMatches.length > kommaMatches.length ? (initialValue = initialValue.replace(/\./g, ""), 
+                    initialValue = initialValue.replace(",", opts.radixPoint)) : kommaMatches.length > dotMatches.length ? (initialValue = initialValue.replace(/,/g, ""), 
+                    initialValue = initialValue.replace(".", opts.radixPoint)) : initialValue = initialValue.indexOf(".") < initialValue.indexOf(",") ? initialValue.replace(/\./g, "") : initialValue = initialValue.replace(/,/g, "") : initialValue = initialValue.replace(new RegExp($.inputmask.escapeRegex.call(this, opts.groupSeparator), "g"), "");
+                }
+                return 0 == opts.digits && (-1 != initialValue.indexOf(".") ? initialValue = initialValue.substring(0, initialValue.indexOf(".")) : -1 != initialValue.indexOf(",") && (initialValue = initialValue.substring(0, initialValue.indexOf(",")))), 
                 initialValue;
             }
         },

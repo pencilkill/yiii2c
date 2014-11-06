@@ -24,6 +24,7 @@ return array(
     'yii\\authclient\\' => array($vendorDir . '/yiisoft/yii2-authclient'),
     'yii\\apidoc\\' => array($vendorDir . '/yiisoft/yii2-apidoc'),
     'yii\\' => array($vendorDir . '/yiisoft/yii2'),
+    'mdm\\admin\\' => array($vendorDir . '/mdmsoft/yii2-admin'),
     'cebe\\markdown\\latex\\' => array($vendorDir . '/cebe/markdown-latex'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
     'cebe\\jssearch\\' => array($vendorDir . '/cebe/js-search/lib'),

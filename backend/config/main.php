@@ -13,7 +13,20 @@ return [
     'language' => 'zh-CN',
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => [
+		'admin' => [
+			'class' => 'mdm\admin\Module',
+			'controllerMap' => [
+				'assignment' => [
+					'class' => 'mdm\admin\controllers\AssignmentController',
+					'userClassName' => 'backend\models\Admin',
+					'idField' => 'admin_id',
+					'usernameField' => 'username',
+					//'searchClass' => 'backend\models\search\Admin',
+				]
+			]
+		],
+	],
     'components' => [
         'user' => [
             'identityClass' => 'backend\models\Admin',
@@ -42,6 +55,13 @@ return [
                 ]
             ]
         ],
+        'authManager' => [
+        	'class' => 'yii\rbac\DbManager',
+        	'itemTable' => 'admin_item',
+        	'itemChildTable' => 'admin_item_child',
+        	'assignmentTable' => 'admin_assignment',
+        	'ruleTable' => 'admin_rule',
+		],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
@@ -55,5 +75,11 @@ return [
             'errorAction' => 'site/error',
         ],
     ],
+    'as access' => [
+    	'class' => 'mdm\admin\components\AccessControl',
+    	'allowActions' => [
+    		//'admin/*', // add or remove allowed actions to this list
+    	]
+	],
     'params' => $params,
 ];

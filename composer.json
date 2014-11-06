@@ -31,7 +31,8 @@
 		"yiisoft/yii2-smarty": "*",
 		"yiisoft/yii2-sphinx": "*",
 		"yiisoft/yii2-swiftmailer": "*",
-		"yiisoft/yii2-twig": "*"
+		"yiisoft/yii2-twig": "*",
+		"mdmsoft/yii2-admin": "*"
     },
     "require-dev": {
     },

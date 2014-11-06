@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2014-10-29 04:20:50
+-- Generation Time: 2014-11-06 08:22:01
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `admin` (
   `admin_id` int(32) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(64) NOT NULL DEFAULT '',
-  `password` varchar(64) NOT NULL DEFAULT '',
+  `password_hash` varchar(64) NOT NULL DEFAULT '',
   `password_reset_token` varchar(64) DEFAULT NULL,
   `auth_key` varchar(64) NOT NULL,
   `email` varchar(256) NOT NULL DEFAULT '',
@@ -38,7 +38,14 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `updated_at` int(32) unsigned NOT NULL,
   PRIMARY KEY (`admin_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='管理员' AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `admin`
+--
+
+INSERT INTO `admin` (`admin_id`, `username`, `password_hash`, `password_reset_token`, `auth_key`, `email`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'admin', '$2y$13$JfKXfW9EsPIpiCMxvvolGukBupXW7aHC.L6A/ONdhP/nbEo34Wc1m', '6RLM7Yyp1QbQ7Lh5CanaF6xRYsE9IoHj_1414552757', 'rMkzfyB-2Cz03Zug5XE7bMgjNFPyacEG', 'song_de_qiang@sina.com', 10, 1414551874, 1414552757);
 
 -- --------------------------------------------------------
 
@@ -72,6 +79,15 @@ CREATE TABLE IF NOT EXISTS `admin_item` (
   KEY `type` (`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- 转存表中的数据 `admin_item`
+--
+
+INSERT INTO `admin_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
+('Administrator', 1, 'Administrator', NULL, NULL, 1415257803, 1415257803),
+('Guest', 1, 'Guest', NULL, NULL, 1415257853, 1415257853),
+('Super', 1, 'Super Administrator', NULL, NULL, 1415257762, 1415257762);
+
 -- --------------------------------------------------------
 
 --
@@ -84,6 +100,14 @@ CREATE TABLE IF NOT EXISTS `admin_item_child` (
   PRIMARY KEY (`parent`,`child`),
   KEY `child` (`child`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- 转存表中的数据 `admin_item_child`
+--
+
+INSERT INTO `admin_item_child` (`parent`, `child`) VALUES
+('Super', 'Administrator'),
+('Administrator', 'Guest');
 
 -- --------------------------------------------------------
 
@@ -167,11 +191,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
   `password_hash` varchar(64) NOT NULL,
   `password_reset_token` varchar(64) DEFAULT NULL,
   `auth_key` varchar(64) NOT NULL,
-  `role` int(32) NOT NULL DEFAULT '10',
   `email` varchar(256) NOT NULL,
-  `first_name` varchar(64) NOT NULL DEFAULT '',
-  `last_name` varchar(64) NOT NULL DEFAULT '',
-  `approval` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '10',
   `created_at` int(32) unsigned NOT NULL,
   `updated_at` int(32) unsigned NOT NULL,
@@ -183,8 +203,8 @@ CREATE TABLE IF NOT EXISTS `customer` (
 -- 转存表中的数据 `customer`
 --
 
-INSERT INTO `customer` (`customer_id`, `customer_type_id`, `username`, `password_hash`, `password_reset_token`, `auth_key`, `role`, `email`, `first_name`, `last_name`, `approval`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 'admin', '$2y$13$JfKXfW9EsPIpiCMxvvolGukBupXW7aHC.L6A/ONdhP/nbEo34Wc1m', '6RLM7Yyp1QbQ7Lh5CanaF6xRYsE9IoHj_1414552757', 'rMkzfyB-2Cz03Zug5XE7bMgjNFPyacEG', 10, 'song_de_qiang@sina.com', '', '', 0, 10, 1414551874, 1414552757);
+INSERT INTO `customer` (`customer_id`, `customer_type_id`, `username`, `password_hash`, `password_reset_token`, `auth_key`, `email`, `status`, `created_at`, `updated_at`) VALUES
+(2, 1, 'admin', '$2y$13$JfKXfW9EsPIpiCMxvvolGukBupXW7aHC.L6A/ONdhP/nbEo34Wc1m', '6RLM7Yyp1QbQ7Lh5CanaF6xRYsE9IoHj_1414552757', 'rMkzfyB-2Cz03Zug5XE7bMgjNFPyacEG', 'song_de_qiang@sina.com', 10, 1414551874, 1414552757);
 
 -- --------------------------------------------------------
 
