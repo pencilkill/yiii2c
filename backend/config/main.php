@@ -14,7 +14,7 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'modules' => [
-		'admin' => [
+		'rbac' => [
 			'class' => 'mdm\admin\Module',
 			'controllerMap' => [
 				'assignment' => [
@@ -78,7 +78,7 @@ return [
     'as access' => [
     	'class' => 'mdm\admin\components\AccessControl',
     	'allowActions' => [
-    		//'admin/*', // add or remove allowed actions to this list
+    		'*', // add or remove allowed actions to this list
     	]
 	],
     'params' => $params,
