@@ -11,19 +11,17 @@ use yii\web\IdentityInterface;
  *
  * @property string $admin_id
  * @property string $username
- * @property string $password
- * @property string $salt
- * @property string $token
+ * @property string $password_hash
+ * @property string $password_reset_token
+ * @property string $auth_key
  * @property string $email
  * @property integer $status
- * @property string $create_at
- * @property string $update_at
+ * @property string $created_at
+ * @property string $updated_at
  */
 class Admin extends \yii\db\ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 10;
-    const ROLE_USER = 10;
+    public $password, $affirmpass;
     
     /**
      * @inheritdoc
@@ -49,11 +47,12 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['salt'], 'required'],
-            [['status'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
-            [['username', 'password', 'token'], 'string', 'max' => 64],
-            [['salt'], 'string', 'max' => 32],
+            [['auth_key'], 'required'],
+            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['username', 'password_hash', 'password_reset_token', 'auth_key'], 'string', 'max' => 64],
+            [['password_hash', 'password_reset_token', 'auth_key'], 'safe', 'on' => 'update'],
+            [['password', 'affirmpass'], 'string', 'max' => 64],
+            [['password', 'affirmpass'], 'safe', 'on' => 'update'],
             [['email'], 'string', 'max' => 256],
             [['username'], 'unique']
         ];
@@ -67,13 +66,15 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             'admin_id' => Yii::t('m/Admin', 'Admin ID'),
             'username' => Yii::t('m/Admin', 'Username'),
+            'password_hash' => Yii::t('m/Admin', 'Password Hash'),
+            'password_reset_token' => Yii::t('m/Admin', 'Password Reset Token'),
             'password' => Yii::t('m/Admin', 'Password'),
-            'salt' => Yii::t('m/Admin', 'Salt'),
-            'token' => Yii::t('m/Admin', 'Token'),
+            'affirmpass' => Yii::t('m/Admin', 'Affirmpass'),
+            'auth_key' => Yii::t('m/Admin', 'Auth Key'),
             'email' => Yii::t('m/Admin', 'Email'),
             'status' => Yii::t('m/Admin', 'Status'),
-            'create_at' => Yii::t('m/Admin', 'Created At'),
-            'update_at' => Yii::t('m/Admin', 'Updated At'),
+            'created_at' => Yii::t('m/Admin', 'Created At'),
+            'updated_at' => Yii::t('m/Admin', 'Updated At'),
         ];
     }
 
@@ -82,7 +83,7 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['admin_id' => $id, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['admin_id' => $id, 'status' => true]);
     }
     
     /**
@@ -101,7 +102,7 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['username' => $username, 'status' => true]);
     }
     
     /**
@@ -118,7 +119,7 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
     
         return static::findOne([
             'password_reset_token' => $token,
-            'status' => self::STATUS_ACTIVE,
+            'status' => true,
         ]);
     }
     

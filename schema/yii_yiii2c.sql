@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: 2014-11-06 08:22:01
+-- Generation Time: 2014-11-14 11:22:46
 -- 服务器版本： 5.6.17
 -- PHP Version: 5.5.12
 
@@ -34,8 +34,8 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `auth_key` varchar(64) NOT NULL,
   `email` varchar(256) NOT NULL DEFAULT '',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `created_at` int(32) unsigned NOT NULL,
-  `updated_at` int(32) unsigned NOT NULL,
+  `created_at` int(32) unsigned DEFAULT NULL,
+  `updated_at` int(32) unsigned DEFAULT NULL,
   PRIMARY KEY (`admin_id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='管理员' AUTO_INCREMENT=2 ;
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `admin` (
 --
 
 INSERT INTO `admin` (`admin_id`, `username`, `password_hash`, `password_reset_token`, `auth_key`, `email`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'admin', '$2y$13$JfKXfW9EsPIpiCMxvvolGukBupXW7aHC.L6A/ONdhP/nbEo34Wc1m', '6RLM7Yyp1QbQ7Lh5CanaF6xRYsE9IoHj_1414552757', 'rMkzfyB-2Cz03Zug5XE7bMgjNFPyacEG', 'song_de_qiang@sina.com', 10, 1414551874, 1414552757);
+(1, 'admin', '$2y$13$JfKXfW9EsPIpiCMxvvolGukBupXW7aHC.L6A/ONdhP/nbEo34Wc1m', '6RLM7Yyp1QbQ7Lh5CanaF6xRYsE9IoHj_1414552757', 'rMkzfyB-2Cz03Zug5XE7bMgjNFPyacEG', 'song_de_qiang@sina.com', 1, 1414551874, 1415958858);
 
 -- --------------------------------------------------------
 
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `customer` (
 --
 
 INSERT INTO `customer` (`customer_id`, `customer_type_id`, `username`, `password_hash`, `password_reset_token`, `auth_key`, `email`, `status`, `created_at`, `updated_at`) VALUES
-(2, 1, 'admin', '$2y$13$JfKXfW9EsPIpiCMxvvolGukBupXW7aHC.L6A/ONdhP/nbEo34Wc1m', '6RLM7Yyp1QbQ7Lh5CanaF6xRYsE9IoHj_1414552757', 'rMkzfyB-2Cz03Zug5XE7bMgjNFPyacEG', 'song_de_qiang@sina.com', 10, 1414551874, 1414552757);
+(2, 1, 'admin', '$2y$13$JfKXfW9EsPIpiCMxvvolGukBupXW7aHC.L6A/ONdhP/nbEo34Wc1m', '6RLM7Yyp1QbQ7Lh5CanaF6xRYsE9IoHj_1414552757', 'rMkzfyB-2Cz03Zug5XE7bMgjNFPyacEG', 'song_de_qiang@sina.com', 1, 1414551874, 1414552757);
 
 -- --------------------------------------------------------
 
