@@ -16,9 +16,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => 256]) ?>
 
-    <?= $form->field($model, 'password')->textInput(['maxlength' => 64]) ?>
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => 64]) ?>
 
-    <?= $form->field($model, 'affirmpass')->textInput(['maxlength' => 64]) ?>
+    <?= $form->field($model, 'affirmpass')->passwordInput(['maxlength' => 64]) ?>
 
     <?= $form->field($model, 'status')->dropDownList([false => Yii::t('app', 'no'), true => Yii::t('app', 'yes')]) ?>
 

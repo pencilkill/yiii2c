@@ -47,14 +47,16 @@ class Admin extends \yii\db\ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['auth_key'], 'required'],
-            [['status', 'created_at', 'updated_at'], 'integer'],
+            [['username'], 'unique'],
             [['username', 'password_hash', 'password_reset_token', 'auth_key'], 'string', 'max' => 64],
-            [['password_hash', 'password_reset_token', 'auth_key'], 'safe', 'on' => 'update'],
+            [['username'], 'safe', 'on' => '!update'],
+            [['password', 'affirmpass'], 'required', 'on' => 'insert'],
             [['password', 'affirmpass'], 'string', 'max' => 64],
-            [['password', 'affirmpass'], 'safe', 'on' => 'update'],
+            [['affirmpass'], 'compare', 'compareAttribute' => 'password'],
+            [['password_hash', 'password_reset_token', 'auth_key'], 'safe', 'on' => '!insert, !update'],
             [['email'], 'string', 'max' => 256],
-            [['username'], 'unique']
+            [['status'], 'boolean'],
+            [['created_at', 'updated_at'], 'integer'],
         ];
     }
 
