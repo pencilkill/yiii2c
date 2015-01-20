@@ -24,7 +24,8 @@ return [
 					'usernameField' => 'username',
 					//'searchClass' => 'backend\models\search\Admin',
 				]
-			]
+			],
+			'layout' => 'top-menu'
 		],
 	],
     'components' => [
@@ -78,7 +79,7 @@ return [
     'as access' => [
     	'class' => 'mdm\admin\components\AccessControl',
     	'allowActions' => [
-    		'*', // add or remove allowed actions to this list
+    		'*'
     	]
 	],
     'params' => $params,
